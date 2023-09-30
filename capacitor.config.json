@@ -18,7 +18,7 @@
     }
   },
   "appId": "com.example.app",
-  "appName": "primeraApp",
+  "appName": "app01",
   "webDir": "www",
   "server": {
     "androidScheme": "https"
