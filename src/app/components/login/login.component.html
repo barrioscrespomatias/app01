@@ -13,62 +13,86 @@
             </ion-card>
           </ion-col>
         </ion-row>
-  
+
         <ion-row>
           <ion-col size="12" class="input-color">
             <ion-item>
-              <ion-input class="text-input" label="Correo electrónico" formControlName="email" class="input-text js-input" required></ion-input>
+              <ion-input class="text-input" label="Correo electrónico" formControlName="email"
+                class="input-text js-input" required></ion-input>
               <div *ngIf="form.get('mail')?.invalid && (form.get('mail')?.dirty || form.get('mail')?.touched)">
                 <div *ngIf="form.get('mail')?.errors?.['required']" class="error-message">
                   El campo es requerido.
                 </div>
                 <div *ngIf="form.get('mail')?.errors?.['minlength']" class="error-message">
-                   El campo debe tener al menos {{form.get('mail')?.errors?.['minlength'].requiredLength}} caracteres.
-                 </div>
-                 <div *ngIf="form.get('mail')?.errors?.['maxlength']" class="error-message">
-                   El campo debe tener como maximo {{form.get('mail')?.errors?.['maxlength'].requiredLength}} caracteres.
-                 </div>
+                  El campo debe tener al menos {{form.get('mail')?.errors?.['minlength'].requiredLength}} caracteres.
+                </div>
+                <div *ngIf="form.get('mail')?.errors?.['maxlength']" class="error-message">
+                  El campo debe tener como maximo {{form.get('mail')?.errors?.['maxlength'].requiredLength}} caracteres.
+                </div>
               </div>
             </ion-item>
           </ion-col>
           <ion-col size="12">
             <ion-item>
-              <ion-input label="Contraseña" type="password" formControlName="password" class="input-text js-input" required></ion-input>
-  
-              <div *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
+              <ion-input label="Contraseña" type="password" formControlName="password" class="input-text js-input"
+                required></ion-input>
+
+              <div
+                *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
                 <div *ngIf="form.get('password')?.errors?.['required']" class="error-message">
-                   El campo es requerido.
+                  El campo es requerido.
                 </div>
                 <div *ngIf="form.get('password')?.errors?.['minlength']" class="error-message">
-                   El campo debe tener al menos {{form.get('password')?.errors?.['minlength'].requiredLength}} caracteres.
+                  El campo debe tener al menos {{form.get('password')?.errors?.['minlength'].requiredLength}}
+                  caracteres.
                 </div>
                 <div *ngIf="form.get('password')?.errors?.['maxlength']" class="error-message">
-                   El campo debe tener como maximo {{form.get('password')?.errors?.['maxlength'].requiredLength}} caracteres.
+                  El campo debe tener como maximo {{form.get('password')?.errors?.['maxlength'].requiredLength}}
+                  caracteres.
                 </div>
-                <span *ngIf="form.get('password')?.errors?.['pattern']">El campo solo puede contener letras y caracteres especiales.</span>
-             </div>
+                <span *ngIf="form.get('password')?.errors?.['pattern']">El campo solo puede contener letras y caracteres
+                  especiales.</span>
+              </div>
             </ion-item>
           </ion-col>
         </ion-row>
-      <!-- </ion-grid> -->
-  
-  
-      <!-- <ion-grid> -->
+        <!-- </ion-grid> -->
+
+
+        <!-- <ion-grid> -->
         <ion-row class="ion-align-items-center">
           <ion-col size="12" class="ion-text-center">
-            <ion-button type="submit" expand="block" (click)="SignIn()">Ingresar</ion-button>
+            <ion-button type="submit" color="primary" size="large" expand="block" (click)="SignIn()">Ingresar</ion-button>
           </ion-col>
         </ion-row>
-      <!-- </ion-grid> -->
-  
-      <!-- <ion-grid> -->
-        <ion-row class="ion-align-items-center">
+        <!-- </ion-grid> -->
+
+        <!-- <ion-grid> -->
+        <!-- <ion-row class="ion-align-items-center">
           <ion-col size="12" class="ion-text-center">
             <ion-button type="submit" color="success" expand="block" (click)="SignUp()">Registrarse</ion-button>
+          </ion-col>
+        </ion-row> -->
+
+        <ion-row class="ion-align-items-center">
+          <ion-col size="12" class="ion-text-center">
+            <ion-button type="submit" size="large" color="secondary" expand="block" (click)="AccesoRapido('admin@admin.com','1111')">ADMIN</ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-align-items-center">
+          <ion-col size="12" class="ion-text-center">
+            <ion-button type="submit" size="large" color="secondary" expand="block" (click)="AccesoRapido('invitado@invitado.com','2222')">INVITADO</ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-align-items-center">
+          <ion-col size="12" class="ion-text-center">
+            <ion-button type="submit" size="large" color="secondary" expand="block" (click)="AccesoRapido('usuario@usuario.com','3333')">USUARIO</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
     </form>
   </ion-list>
-  
-  </body>
+
+</body>
