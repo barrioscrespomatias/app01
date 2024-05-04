@@ -18,6 +18,11 @@ const routes: Routes = [
   { path: 'cosas-lindas', component: CosasLindasComponent, canActivate: [AuthGuard]  },
   { path: 'cosas-feas', component: CosasFeasComponent, canActivate: [AuthGuard]  },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
+  },
+
 ];
 @NgModule({
   imports: [
