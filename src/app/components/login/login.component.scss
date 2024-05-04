@@ -1,0 +1,25 @@
+$font-stack: Helvetica, sans-serif;
+$primary-color: #30425a;
+$text-color: #fefcf9;
+
+body {
+  font: 100% $font-stack;
+  background-color: $primary-color;
+}
+
+.blue {
+    font: 100% $font-stack;
+    background-color: $primary-color;
+  }
+
+ion-card {
+    box-shadow: none;
+}
+
+ion-card-title, ion-card-subtitle{
+    color: $text-color;
+}
+
+.text-input{
+    background: $primary-color;
+}
