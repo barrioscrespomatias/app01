@@ -1,14 +1,22 @@
-<app-menu></app-menu>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cosas Feas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="6" *ngFor="let photo of photoService.fotosFeas; index as position">
-        <div *ngIf="photo.promptLabelHeader == 'fea'">
-          <ion-img [src]="photo.webviewPath"></ion-img>
-        </div>
+      <ion-col size="6" *ngFor="let foto of fotosFeas">
+        <ion-card>
+          <img [src]="foto" alt="Foto Fea">
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <!-- ion-fab markup  -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="takePhoto()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

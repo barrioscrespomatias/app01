@@ -1,0 +1,26 @@
+ion-content {
+    --background: #fff;
+  
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  
+    .full-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+  
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+  

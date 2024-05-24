@@ -1,5 +1,5 @@
 <app-menu class="ion-margin-bottom"></app-menu>
-<ion-grid class="ion-margin-top">
+<!-- <ion-grid class="ion-margin-top"> -->
     <!-- <ion-row class="ion-align-items-center">
         <ion-col size="12" class="ion-text-center" (click)="RedirigirCosasLindas()">
             <app-cosas-lindas (click)="RedirigirCosasLindas()"></app-cosas-lindas>
@@ -22,4 +22,15 @@
               </ion-card>
         </ion-col>
     </ion-row> -->
-</ion-grid>
+<!-- </ion-grid> -->
+
+<ion-content fullscreen>
+    <div class="button-container">
+      <ion-button expand="block" (click)="navigateTo('cosas-lindas')" class="full-button">
+        <img src="assets/images/home/bueno.jpg" alt="Cosas Lindas" />
+      </ion-button>
+      <ion-button expand="block" (click)="navigateTo('cosas-feas')" class="full-button">
+        <img src="assets/images/home/malo.jpg" alt="Cosas Feas" />
+      </ion-button>
+    </div>
+  </ion-content>
