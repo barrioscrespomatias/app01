@@ -16,6 +16,7 @@ import { ToastComponent } from './components/toast/toast.component';
 import { CosasLindasComponent } from './components/cosas-lindas/cosas-lindas.component';
 import { CosasFeasComponent } from './components/cosas-feas/cosas-feas.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatCardModule} from '@angular/material/card'; 
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ToastComponent,
     CosasFeasComponent,
     CosasLindasComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     provideFirestore(() => getFirestore()),
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule
   ],
   exports: [
     MenuComponent,

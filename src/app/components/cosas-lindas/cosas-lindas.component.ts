@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { UserPhoto } from 'src/app/interfaces/userPhoto';
 import { FileService } from 'src/app/services/file.service';
+import { AngularFireService } from 'src/app/services/angular-fire.service';
 import { decode } from 'base64-arraybuffer';
 import * as moment from 'moment';
 import {
@@ -10,6 +11,8 @@ import {
   listAll,
   ref,
   uploadBytes,
+  getMetadata,
+  updateMetadata
 } from 'firebase/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map, tap } from 'rxjs';
@@ -22,12 +25,14 @@ import { Observable, map, tap } from 'rxjs';
 export class CosasLindasComponent implements OnInit {
   assetBasePath: string = 'assets/images/home/bueno.jpg';
   alt: string = 'cosas-lindas';
-  fotosLindas: string[] = [];
+  fotosLindas: { url: string, metadata: any }[] = [];
+  currentEmail = '';
 
-  constructor(private firestore: AngularFirestore, private cdRef: ChangeDetectorRef) {}
+  constructor(private firestore: AngularFirestore, private cdRef: ChangeDetectorRef, private angularFireService: AngularFireService) {}
 
   async ngOnInit() {
     await this.updateFotoslindas();
+    this.currentEmail = await this.angularFireService.GetEmailLogueado();
   }
 
   async takePhoto() {
@@ -50,14 +55,24 @@ export class CosasLindasComponent implements OnInit {
         lastModified: moment().unix(),
         type: blob.type,
       });
+
+      
+
       const storage = getStorage();
       const storageRef = ref(
         storage,
         'fotos_lindas/' + 'user-b_' + moment().unix()
       );
 
+      const metadata = {
+        customMetadata: {
+          'user': this.currentEmail,
+          'votes': '0'
+        }
+      };
+
       // Espera a que la foto se suba y luego actualiza las fotos
-      await uploadBytes(storageRef, file).then(async (snapshot) => {
+      await uploadBytes(storageRef, file, metadata).then(async (snapshot) => {
         console.log('Foto subida con éxito:', snapshot);
         await this.updateFotoslindas(); // Actualiza las fotos después de subir la nueva foto
       }).catch(error => {
@@ -66,17 +81,24 @@ export class CosasLindasComponent implements OnInit {
     }
   }
 
-  async getFotoslindas(): Promise<string[]> {
+  async getFotoslindas(): Promise<{ url: string, metadata: any }[]> {
     const storage = getStorage();
     const storageRef = ref(storage, 'fotos_lindas');
-
+  
     try {
       const result = await listAll(storageRef);
-      const downloadURLs = await Promise.all(
-        result.items.map((item) => getDownloadURL(item))
+      console.log(result);
+      
+      const fotosConMetadatos = await Promise.all(
+        result.items.map(async (item) => {
+          const url = await getDownloadURL(item);
+          const metadata = (await getMetadata(item)).customMetadata;
+          return { url, metadata };
+        })
       );
-      console.log('URLs descargadas:', downloadURLs);
-      return downloadURLs;
+      
+      console.log('URLs y metadatos descargados:', fotosConMetadatos);
+      return fotosConMetadatos;
     } catch (error) {
       console.error('Error al obtener las fotos lindas:', error);
       return [];
@@ -85,7 +107,53 @@ export class CosasLindasComponent implements OnInit {
 
   async updateFotoslindas() {
     this.fotosLindas = await this.getFotoslindas();
-    console.log('Nuevas fotos lindas:', this.fotosLindas);
     this.cdRef.detectChanges(); // Asegúrate de que los cambios se detecten
   }
+
+  accionMegusta(url: string, votos: string) {
+    const storage = getStorage();
+    const forestRef = ref(storage, url);
+  
+    getMetadata(forestRef).then((metadata) => {
+      const customMetadata = metadata.customMetadata || {};
+      const currentUser = this.currentEmail;
+      const currentVoters = customMetadata['voters'] ? JSON.parse(customMetadata['voters']) : [];
+  
+      // Verificar si el usuario ya ha votado
+      if (currentVoters.includes(currentUser)) {
+        console.log('Este usuario ya ha votado.');
+        return;
+      }
+  
+      // Convertir votos a número, incrementar en 1 y luego convertir de nuevo a string
+      let votosInt = parseInt(votos, 10);
+      votosInt += 1;
+      const nuevosVotos = votosInt.toString();
+  
+      // Añadir el usuario actual a la lista de votantes
+      currentVoters.push(currentUser);
+  
+      // Crear nuevos metadatos para actualizar
+      const newMetadata = {
+        customMetadata: {
+          'user': currentUser,
+          'votes': nuevosVotos,
+          'voters': JSON.stringify(currentVoters) // Guardar la lista de votantes como un string JSON
+        }
+      };
+  
+      // Actualizar propiedades de los metadatos
+      updateMetadata(forestRef, newMetadata)
+        .then((metadata) => {
+          // Metadatos actualizados son retornados en el Promise
+          this.updateFotoslindas();
+        }).catch((error) => {
+          // Uh-oh, ocurrió un error!
+          console.error('Error al actualizar metadatos:', error);
+        });
+    }).catch((error) => {
+      console.error('Error al obtener metadatos:', error);
+    });
+  }
+  
 }

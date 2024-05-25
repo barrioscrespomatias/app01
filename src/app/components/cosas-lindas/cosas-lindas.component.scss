@@ -1,6 +1,59 @@
+ion-col {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.example-card {
+  max-width: 100%;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.example-header-image {
+  background-size: cover;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+mat-card-header {
+  display: flex;
+  align-items: center;
+}
+
+mat-card-title {
+  flex: 1;
+  text-align: center; /* Centrando el título */
+  overflow: hidden; /* Evita que el texto se salga del contenedor */
+  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es muy largo */
+  white-space: nowrap; /* Evita que el texto se quiebre en varias líneas */
+}
+
+mat-card-subtitle {
+  flex: 1;
+  text-align: center; /* Centrando el subtítulo */
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button[mat-button] {
+  color: #3880ff;
+}
+
+ion-fab-button {
+  --background: #3880ff;
+  --color: #fff;
+}
+
 .camera-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
