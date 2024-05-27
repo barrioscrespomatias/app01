@@ -61,13 +61,14 @@ export class CosasLindasComponent implements OnInit {
       const storage = getStorage();
       const storageRef = ref(
         storage,
-        'fotos_lindas/' + 'user-b_' + moment().unix()
+        'fotos_lindas/'+ this.currentEmail +'_' + moment().toISOString()
       );
 
       const metadata = {
         customMetadata: {
           'user': this.currentEmail,
-          'votes': '0'
+          'votes': '0',
+          'createdAt': moment().toISOString()
         }
       };
 
@@ -96,6 +97,18 @@ export class CosasLindasComponent implements OnInit {
           return { url, metadata };
         })
       );
+
+      // Ordena las fotos por fecha de creación en orden descendente
+      fotosConMetadatos.sort((a, b) => {
+        // Verificar si a.metadata y b.metadata son nulos antes de acceder a createdAt
+        if (a.metadata && b.metadata && a.metadata['createdAt'] && b.metadata['createdAt']) {
+          const dateA = new Date(a.metadata['createdAt']);
+          const dateB = new Date(b.metadata['createdAt']);
+          return dateB.getTime() - dateA.getTime();
+        } else {
+          return 0; // Si falta algún dato, deja el orden sin cambios
+        }
+      });
       
       console.log('URLs y metadatos descargados:', fotosConMetadatos);
       return fotosConMetadatos;
@@ -110,7 +123,7 @@ export class CosasLindasComponent implements OnInit {
     this.cdRef.detectChanges(); // Asegúrate de que los cambios se detecten
   }
 
-  accionMegusta(url: string, votos: string) {
+  accionMegusta(url: string, votos: string, userTakePhoto:string, createdAt:string) {
     const storage = getStorage();
     const forestRef = ref(storage, url);
   
@@ -136,7 +149,8 @@ export class CosasLindasComponent implements OnInit {
       // Crear nuevos metadatos para actualizar
       const newMetadata = {
         customMetadata: {
-          'user': currentUser,
+          'user': userTakePhoto,
+          'createdAt':createdAt,
           'votes': nuevosVotos,
           'voters': JSON.stringify(currentVoters) // Guardar la lista de votantes como un string JSON
         }

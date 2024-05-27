@@ -1,11 +1,24 @@
-<app-menu class="ion-margin-bottom"></app-menu>
-<ion-content fullscreen>
+<ion-header>
+  <ion-toolbar>
+    <ion-segment value="all">
+      <ion-segment-button (click)="navigateTo('login')" value="favorites">
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="fullscreen-content">
+  <div class="form-container">
     <div class="button-container">
-      <ion-button expand="block" (click)="navigateTo('cosas-lindas')" class="full-button">
+      <ion-button (click)="navigateTo('cosas-lindas')" expand="block" class="fullscreen-button">
         <img src="assets/images/home/bueno.jpg" alt="Cosas Lindas" />
       </ion-button>
-      <ion-button expand="block" (click)="navigateTo('cosas-feas')" class="full-button">
+    </div>
+    <div class="input-container">
+      <ion-button (click)="navigateTo('cosas-feas')" expand="block" class="fullscreen-button secondary">
         <img src="assets/images/home/malo.jpg" alt="Cosas Feas" />
       </ion-button>
     </div>
-  </ion-content>
+  </div>
+</ion-content>

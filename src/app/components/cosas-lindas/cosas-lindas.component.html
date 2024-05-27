@@ -1,6 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Cosas Lindas</ion-title>
+    <ion-segment value="all">
+      <ion-segment-button value="favorites">
+        <ion-label>Cosas lindas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
@@ -10,11 +14,11 @@
       <ion-col size="6" *ngFor="let foto of fotosLindas">
         <mat-card class="example-card">
           <div class="card-header">
-            <!-- <p>{{foto.metadata.user}}</p>             -->
+            <p>{{foto.metadata.user}}</p>            
           </div>
-          <img mat-card-image [src]="foto.url" alt="Foto Fea" width="100%" height="100%">
+          <img mat-card-image [src]="foto.url" alt="Foto linda" width="100%" height="100%">
           <mat-card-actions>
-            <button mat-button (click)="accionMegusta(foto.url, foto.metadata.votes)">
+            <button mat-button (click)="accionMegusta(foto.url, foto.metadata.votes,foto.metadata.user, foto.metadata.createdAt)">
               <span>{{foto.metadata.votes}}</span>
               <ion-icon name="heart"></ion-icon>
             </button>
