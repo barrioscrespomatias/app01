@@ -1,6 +1,6 @@
 <body>
   <ion-list class="blue">
-    <form [formGroup]="form">
+    <form [formGroup]="form" action="javascript:void(0)" (submit)="SignIn()">
       <ion-grid class>
         <ion-row class="ion-align-items-center">
           <ion-col size="12" class="ion-text-center">
@@ -62,7 +62,7 @@
         <!-- <ion-grid> -->
         <ion-row class="ion-align-items-center">
           <ion-col size="12" class="ion-text-center">
-            <ion-button type="submit" color="primary" size="large" expand="block" (click)="SignIn()">Ingresar</ion-button>
+            <ion-button type="submit" color="primary" size="large" expand="block">Ingresar</ion-button>
           </ion-col>
         </ion-row>
         <!-- </ion-grid> -->
@@ -76,19 +76,19 @@
 
         <ion-row class="ion-align-items-center">
           <ion-col size="12" class="ion-text-center">
-            <ion-button type="submit" size="large" color="secondary" expand="block" (click)="AccesoRapido('admin@admin.com','111111')">ADMIN</ion-button>
+            <ion-button size="large" color="secondary" expand="block" (click)="AccesoRapido('admin@admin.com','111111')">ADMIN</ion-button>
           </ion-col>
         </ion-row>
 
         <ion-row class="ion-align-items-center">
           <ion-col size="12" class="ion-text-center">
-            <ion-button type="submit" size="large" color="secondary" expand="block" (click)="AccesoRapido('invitado@invitado.com','222222')">INVITADO</ion-button>
+            <ion-button size="large" color="secondary" expand="block" (click)="AccesoRapido('invitado@invitado.com','222222')">INVITADO</ion-button>
           </ion-col>
         </ion-row>
 
         <ion-row class="ion-align-items-center">
           <ion-col size="12" class="ion-text-center">
-            <ion-button type="submit" size="large" color="secondary" expand="block" (click)="AccesoRapido('usuario@usuario.com','333333')">USUARIO</ion-button>
+            <ion-button size="large" color="secondary" expand="block" (click)="AccesoRapido('usuario@usuario.com','333333')">USUARIO</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>

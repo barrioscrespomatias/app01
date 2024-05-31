@@ -3,6 +3,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { UserPhoto } from 'src/app/interfaces/userPhoto';
 import { FileService } from 'src/app/services/file.service';
 import { AngularFireService } from 'src/app/services/angular-fire.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { decode } from 'base64-arraybuffer';
 import * as moment from 'moment';
 import {
@@ -16,6 +17,8 @@ import {
 } from 'firebase/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map, tap } from 'rxjs';
+import { NavController } from '@ionic/angular';
+import Chart from 'chart.js/auto'
 
 @Component({
   selector: 'app-cosas-lindas',
@@ -27,8 +30,14 @@ export class CosasLindasComponent implements OnInit {
   alt: string = 'cosas-lindas';
   fotosLindas: { url: string, metadata: any }[] = [];
   currentEmail = '';
+  activeTab : string = 'cosas-lindas';
+  data1: number[] = [];
 
-  constructor(private firestore: AngularFirestore, private cdRef: ChangeDetectorRef, private angularFireService: AngularFireService) {}
+  constructor(private firestore: AngularFirestore, 
+              private cdRef: ChangeDetectorRef, 
+              private angularFireService: AngularFireService,
+              private toastService:ToastService,
+              private navCtrl: NavController) {}
 
   async ngOnInit() {
     await this.updateFotoslindas();
@@ -64,11 +73,13 @@ export class CosasLindasComponent implements OnInit {
         'fotos_lindas/'+ this.currentEmail +'_' + moment().toISOString()
       );
 
+
       const metadata = {
         customMetadata: {
           'user': this.currentEmail,
           'votes': '0',
-          'createdAt': moment().toISOString()
+          'createdAt': moment().toISOString(),
+          'name': moment().unix().toString()
         }
       };
 
@@ -123,7 +134,7 @@ export class CosasLindasComponent implements OnInit {
     this.cdRef.detectChanges(); // Asegúrate de que los cambios se detecten
   }
 
-  accionMegusta(url: string, votos: string, userTakePhoto:string, createdAt:string) {
+  accionMegusta(url: string, votos: string, userTakePhoto:string, createdAt:string, name:string) {
     const storage = getStorage();
     const forestRef = ref(storage, url);
   
@@ -134,7 +145,7 @@ export class CosasLindasComponent implements OnInit {
   
       // Verificar si el usuario ya ha votado
       if (currentVoters.includes(currentUser)) {
-        console.log('Este usuario ya ha votado.');
+       this.toastService.ToastMessage('Este usuario ya ha votado.', 'top');
         return;
       }
   
@@ -150,6 +161,7 @@ export class CosasLindasComponent implements OnInit {
       const newMetadata = {
         customMetadata: {
           'user': userTakePhoto,
+          'name': name,
           'createdAt':createdAt,
           'votes': nuevosVotos,
           'voters': JSON.stringify(currentVoters) // Guardar la lista de votantes como un string JSON
@@ -168,6 +180,66 @@ export class CosasLindasComponent implements OnInit {
     }).catch((error) => {
       console.error('Error al obtener metadatos:', error);
     });
+  }
+
+  navigateTo(section: string) {
+    this.navCtrl.navigateForward(`/${section}`);
+  }
+
+  async fotosLindasGraficosData(): Promise<{ url: string, metadata: any, votos: number }[]> {
+    const storage = getStorage();
+    const storageRef = ref(storage, 'fotos_lindas');
+
+    try {
+      const result = await listAll(storageRef);
+      console.log(result);
+
+      const fotosConMetadatos = await Promise.all(
+        result.items.map(async (item) => {
+          const url = await getDownloadURL(item);
+          const metadata = (await getMetadata(item)).customMetadata;
+          return { url, metadata };
+        })
+      );
+
+      // Ordena las fotos por fecha de creación en orden descendente
+      fotosConMetadatos.sort((a, b) => {
+        if (a.metadata && b.metadata && a.metadata['createdAt'] && b.metadata['createdAt']) {
+          const dateA = new Date(a.metadata['createdAt']);
+          const dateB = new Date(b.metadata['createdAt']);
+          return dateB.getTime() - dateA.getTime();
+        } else {
+          return 0; // Si falta algún dato, deja el orden sin cambios
+        }
+      });
+
+      // Agrupar las fotos por votos y ordenar por la cantidad de votos
+      const votosMap = new Map<string, { url: string, metadata: any, votos: number }>();
+
+      fotosConMetadatos.forEach((foto) => {
+        const nombre = foto.metadata?.['name'] || foto.url; // Usar nombre o URL como clave
+        const votos = parseInt(foto.metadata?.['votes'] || '0', 10); // Obtener votos, convertir a número
+
+        if (votosMap.has(nombre)) {
+          votosMap.get(nombre)!.votos += votos; // Sumar votos si ya existe
+        } else {
+          votosMap.set(nombre, { ...foto, votos }); // Crear nueva entrada si no existe
+        }
+      });
+
+      const ranking = Array.from(votosMap.values()).sort((a, b) => b.votos - a.votos);
+
+      console.log('Ranking de imágenes por votos:', ranking);
+      return ranking;
+    } catch (error) {
+      console.error('Error al obtener las fotos lindas:', error);
+      return [];
+    }
+  }
+
+  changeTab(tab: string) {
+    this.activeTab = tab;
+    
   }
   
 }

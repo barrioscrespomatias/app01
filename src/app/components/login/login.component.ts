@@ -1,18 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AngularFireService } from '../../services/angular-fire.service';
+import { IonRouterOutlet } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit  {
   form!: FormGroup;
   public isLogged: boolean = false;
 
   constructor(public angularFireService: AngularFireService) {
     this.checkLoggedIn();
+    
+  }
+
+  ionViewWillEnter() {
+    this.form.reset();
   }
 
   async checkLoggedIn() {
@@ -21,6 +27,10 @@ export class LoginComponent implements OnInit {
 
   SignIn() {
     this.angularFireService.SignIn(this.email?.value, this.password?.value);
+    setTimeout(() => {
+      this.form.controls['email'].setValue('');
+      this.form.controls['password'].setValue('');
+    }, 500);
   }
 
   GoogleAuth() {

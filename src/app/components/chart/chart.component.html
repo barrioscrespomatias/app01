@@ -1,0 +1,11 @@
+<div class="chart-container" style="position: relative; height:40vh; width:80vw">
+    <canvas 
+      ngChartjs 
+      [datasets]="lineChartData" 
+      [labels]="chartsLabels" 
+      [options]="lineChartOptions"
+      [legend]="lineChartLegend" 
+      [chartType]="lineChartType" 
+      [inlinePlugins]="inlinePlugin">
+    </canvas>
+</div>

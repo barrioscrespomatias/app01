@@ -13,6 +13,8 @@ import {
 } from 'firebase/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireService } from 'src/app/services/angular-fire.service';
+import { NavController } from '@ionic/angular';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-cosas-feas',
@@ -25,7 +27,7 @@ export class CosasFeasComponent implements OnInit {
   fotosFeas: { url: string, metadata: any }[] = [];
   currentEmail = '';
 
-  constructor(private firestore: AngularFirestore, private cdRef: ChangeDetectorRef, private angularFireService: AngularFireService) {}
+  constructor(private firestore: AngularFirestore, private cdRef: ChangeDetectorRef, private angularFireService: AngularFireService,  private navCtrl: NavController, private toastService:ToastService) {}
 
   async ngOnInit() {
     await this.updateFotosFeas();
@@ -64,7 +66,8 @@ export class CosasFeasComponent implements OnInit {
         customMetadata: {
           'user': this.currentEmail,
           'votes': '0',
-          'createdAt': moment().toISOString()
+          'createdAt': moment().toISOString(),
+          'name': moment().unix().toString()
         }
       };
 
@@ -129,7 +132,7 @@ export class CosasFeasComponent implements OnInit {
 
   //#region Me gusta
 
-  accionMegusta(url: string, votos: string, userTakePhoto:string, createdAt:string) {
+  accionMegusta(url: string, votos: string, userTakePhoto:string, createdAt:string,  name:string) {
     const storage = getStorage();
     const forestRef = ref(storage, url);
   
@@ -140,7 +143,7 @@ export class CosasFeasComponent implements OnInit {
   
       // Verificar si el usuario ya ha votado
       if (currentVoters.includes(currentUser)) {
-        console.log('Este usuario ya ha votado.');
+        this.toastService.ToastMessage('Este usuario ya ha votado.', 'top');
         return;
       }
   
@@ -156,6 +159,7 @@ export class CosasFeasComponent implements OnInit {
       const newMetadata = {
         customMetadata: {
           'user': userTakePhoto,
+          'name': name,
           'createdAt': createdAt,
           'votes': nuevosVotos,
           'voters': JSON.stringify(currentVoters) // Guardar la lista de votantes como un string JSON
@@ -176,4 +180,8 @@ export class CosasFeasComponent implements OnInit {
     });
   }
   //#endregion
+
+  navigateTo(section: string) {
+    this.navCtrl.navigateForward(`/${section}`);
+  }
 }

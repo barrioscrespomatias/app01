@@ -1,0 +1,35 @@
+ion-header {
+  background-color: #ffffff;
+}
+
+ion-toolbar {
+  --background: #4daaff;
+  color: white;
+}
+
+ion-segment-button {
+  --color-checked: #ffffff;
+  --background-checked: #0056b3;
+  --color: #0056b3;
+}
+
+ion-content {
+  --background: #e0f7fa;
+}
+
+body{
+    --background: #e0f7fa;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 100%;
+}

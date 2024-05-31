@@ -17,6 +17,11 @@ import { CosasLindasComponent } from './components/cosas-lindas/cosas-lindas.com
 import { CosasFeasComponent } from './components/cosas-feas/cosas-feas.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card'; 
+import { GraficosComponent } from './components/graficos/graficos.component';
+import { ChartComponent } from './components/chart/chart.component';
+import { NgChartjsModule } from 'ng-chartjs';
+import { GraficosLindosComponent } from './components/graficos-lindos/graficos-lindos.component';
+import { GraficosFeosComponent } from './components/graficos-feos/graficos-feos.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +32,10 @@ import {MatCardModule} from '@angular/material/card';
     ToastComponent,
     CosasFeasComponent,
     CosasLindasComponent,
+    GraficosComponent,
+    ChartComponent,
+    GraficosLindosComponent,
+    GraficosFeosComponent
 
   ],
   imports: [
@@ -38,13 +47,17 @@ import {MatCardModule} from '@angular/material/card';
     provideFirestore(() => getFirestore()),
     FormsModule,
     ReactiveFormsModule,
-    MatCardModule
+    MatCardModule,
+    NgChartjsModule,
   ],
   exports: [
     MenuComponent,
     LoginComponent,
     HomeComponent,
     ToastComponent,
+    GraficosLindosComponent,
+    GraficosFeosComponent,
+    GraficosComponent
     // Agrega el componente en la sección de exports
   ],
   providers: [{ provide: FIREBASE_OPTIONS, useValue: environment }],

@@ -2,23 +2,27 @@
   <ion-toolbar>
     <ion-segment value="all">
       <ion-segment-button value="favorites">
-        <ion-label>Cosas lindas</ion-label>
+        <ion-label>Cosas Lindas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button (click)="navigateTo('')" value="favorites">
+        <ion-label>Cerrar sesión</ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="activeTab === 'cosas-lindas'">
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let foto of fotosLindas">
         <mat-card class="example-card">
           <div class="card-header">
             <p>{{foto.metadata.user}}</p>            
+            <p>{{foto.metadata.name}}</p>            
           </div>
           <img mat-card-image [src]="foto.url" alt="Foto linda" width="100%" height="100%">
           <mat-card-actions>
-            <button mat-button (click)="accionMegusta(foto.url, foto.metadata.votes,foto.metadata.user, foto.metadata.createdAt)">
+            <button mat-button (click)="accionMegusta(foto.url, foto.metadata.votes,foto.metadata.user, foto.metadata.createdAt, foto.metadata.name)">
               <span>{{foto.metadata.votes}}</span>
               <ion-icon name="heart"></ion-icon>
             </button>
@@ -33,3 +37,10 @@
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <!-- <ion-title class="ion-text-center"><ion-icon name="arrow-back-outline"></ion-icon>Cosas lindas</ion-title> -->
+    <ion-title class="ion-text-center" (click)="navigateTo('graficos')">Gráficos</ion-title>
+  </ion-toolbar>
+</ion-footer>
