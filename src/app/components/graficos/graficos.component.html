@@ -2,22 +2,27 @@
   <ion-toolbar>
     <ion-segment>
       <ion-segment-button>
-        <ion-label>Gráfico</ion-label>
+        <ion-label>GRAFICOS</ion-label>
       </ion-segment-button>
       <ion-segment-button (click)="navigateTo('')" value="favorites">
-        <ion-label>Cerrar sesión</ion-label>
+        <ion-label>CERRAR SESIÓN</ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<body>
+<!-- <ion-content>
     <div style="width: 350px; height: 1000px; margin-top: 60%;" ><canvas id="ctx"></canvas></div>
+</ion-content> -->
+
+<body>
+  <div style="width: 350px; height: 1000px; margin-top: 60%;" ><canvas id="ctx"></canvas></div>
 </body>
+
 
 <ion-footer>
   <ion-toolbar>
     <!-- <ion-title class="ion-text-center"><ion-icon name="arrow-back-outline"></ion-icon>Cosas lindas</ion-title> -->
-    <ion-title class="ion-text-center" (click)="navigateTo('cosas-lindas')">Cosas lindas</ion-title>
+    <ion-title class="ion-text-center" (click)="navigateTo('cosas-lindas')">COSAS LINDAS</ion-title>
   </ion-toolbar>
 </ion-footer>

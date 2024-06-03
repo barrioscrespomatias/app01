@@ -3,7 +3,7 @@ ion-header {
 }
 
 ion-toolbar {
-  --background: #4daaff;
+  --background: #6492D9;
   color: white;
 }
 
@@ -14,11 +14,13 @@ ion-segment-button {
 }
 
 ion-content {
-  --background: #e0f7fa;
+  // --background: #e0f7fa;
+  --background: #64D9D6;
 }
 
-body{
-    --background: #e0f7fa;
+body {
+  // --background: #e0f7fa;
+  background-color: #64D9D6;
 }
 
 .chart-container {

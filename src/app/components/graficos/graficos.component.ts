@@ -24,7 +24,7 @@ export class GraficosComponent implements OnInit {
     //#region chart-1
     const ranking = await this.getFotoslindas();
     this.data1 = ranking.map(foto => foto.votos);
-    this.chartsLabels1 = ranking.map(foto => foto.metadata.name);
+    this.chartsLabels1 = ranking.map(foto => foto.metadata.createdAt);
     //#endregion
 
     const ctx = document.getElementById('myChart');
@@ -116,6 +116,7 @@ export class GraficosComponent implements OnInit {
       });
 
       const ranking = Array.from(votosMap.values()).sort((a, b) => b.votos - a.votos);
+      return ranking.slice(0, 3);
 
       console.log('Ranking de imágenes por votos:', ranking);
       return ranking;

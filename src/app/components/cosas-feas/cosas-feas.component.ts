@@ -15,6 +15,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireService } from 'src/app/services/angular-fire.service';
 import { NavController } from '@ionic/angular';
 import { ToastService } from 'src/app/services/toast.service';
+import * as momentTizeZone from 'moment-timezone';
 
 @Component({
   selector: 'app-cosas-feas',
@@ -37,6 +38,10 @@ export class CosasFeasComponent implements OnInit {
   //#region tomar foto
 
   async takePhoto() {
+
+    const moment = require('moment-timezone');
+    momentTizeZone.tz.setDefault("America/Argentina/Buenos_Aires");
+
     const cameraPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Base64, // file-based data; provides best performance
       source: CameraSource.Camera, // automatically take a new photo with the camera
@@ -66,8 +71,8 @@ export class CosasFeasComponent implements OnInit {
         customMetadata: {
           'user': this.currentEmail,
           'votes': '0',
-          'createdAt': moment().toISOString(),
-          'name': moment().unix().toString()
+          'createdAt': moment().format('DD/MM/YY HH:mm:ss'),
+          'name': moment().unix().toString(),
         }
       };
 

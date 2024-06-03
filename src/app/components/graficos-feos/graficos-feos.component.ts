@@ -29,7 +29,7 @@ export class GraficosFeosComponent  implements OnInit {
       //#region chart-1
       const ranking = await this.getFotoslindas();
       this.data1 = ranking.map(foto => foto.votos);
-      this.chartsLabels1 = ranking.map(foto => foto.metadata.name);
+      this.chartsLabels1 = ranking.map(foto => foto.metadata.createdAt);
       //#endregion
   
       const ctx = document.getElementById('myChart');
@@ -109,7 +109,7 @@ export class GraficosFeosComponent  implements OnInit {
         const ranking = Array.from(votosMap.values()).sort((a, b) => b.votos - a.votos);
   
         console.log('Ranking de imágenes por votos:', ranking);
-        return ranking;
+        return ranking.slice(0, 3);
       } catch (error) {
         console.error('Error al obtener las fotos lindas:', error);
         return [];
